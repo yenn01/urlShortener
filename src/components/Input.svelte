@@ -1,12 +1,18 @@
 <script>
-
+    import { notifications } from '../stores/notifications';
+    import Db from './databases/Db.svelte'
     let userInput;
+    let db;
     const send = () => {
+        db.createShortUrls(userInput)
+    }
 
+    const handleSuccess = (eventMsg) => {
+        notifications.success("Short URLs found",3000)
     }
 
 </script>
-
+<Db bind:this={db} on:writeSuccessful={handleSuccess}></Db>
 <div class="tab-input" transition:fade>
     <h1 class="cont-topic">Input your Long Urls Here!</h1>
     <form>

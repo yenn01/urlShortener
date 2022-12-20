@@ -1,9 +1,21 @@
 <script>
+    //Dependencies
     import {Route, router} from 'tinro'; 
+    import { initializeApp } from "firebase/app";
+	import { getAnalytics } from "firebase/analytics";
 
+
+    //Components
     import Input from './components/Input.svelte';
     import Header from './components/Header.svelte'
+    import Toast from './components/utilities/Toast.svelte';
+    import Login from './components/Login.svelte'
 
+    //Create your own firebase config file at project root folder to be imported
+    import {firebaseConfig} from "../firebaseConfig"
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
 	
 </script>
 
@@ -12,10 +24,11 @@
 </svelte:head>
 
 <main>
+    <Toast/>
     <Header></Header>
 	<div class="cont-main">
         <div class="cont-body">
-            <div>Login</div>
+            <Login/>
             <Input/>
         </div>
         <div class="cont-list">
