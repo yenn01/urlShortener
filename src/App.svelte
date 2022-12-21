@@ -3,6 +3,7 @@
     import {Route, router} from 'tinro'; 
     import { initializeApp } from "firebase/app";
 	import { getAnalytics } from "firebase/analytics";
+    import { onMount } from 'svelte';
 
 
     //Components
@@ -10,13 +11,20 @@
     import Header from './components/Header.svelte'
     import Toast from './components/utilities/Toast.svelte';
     import Login from './components/Login.svelte'
+    import Redirect from './components/utilities/Redirect.svelte';
 
     //Create your own firebase config file at project root folder to be imported
     import {firebaseConfig} from "../firebaseConfig"
 
+    import {region} from './stores/region'
+
+   
+    
+
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-	
+
+
 </script>
 
 <svelte:head>
@@ -24,17 +32,28 @@
 </svelte:head>
 
 <main>
-    <Toast/>
-    <Header></Header>
-	<div class="cont-main">
-        <div class="cont-body">
-            <Login/>
-            <Input/>
-        </div>
-        <div class="cont-list">
-            
-        </div>
-    </div>
+    <Route path="/*" firstmatch>    
+        <Route path="/">
+            <Toast/>
+            <Header></Header>
+            <div class="cont-main">
+                <div class="cont-body">
+                    <Login/>
+                    <Input/>
+                </div>
+                <div class="cont-list">
+                    
+                </div>
+            </div>
+        </Route>
+        <Route path="/:redirect" let:meta>
+            <Redirect redirect={meta.params.redirect}></Redirect>
+        </Route>
+    </Route>
+    
+        
+
+
 	
 </main>
 
