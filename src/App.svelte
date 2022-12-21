@@ -12,11 +12,13 @@
     import Toast from './components/utilities/Toast.svelte';
     import Login from './components/Login.svelte'
     import Redirect from './components/utilities/Redirect.svelte';
+    import List from './components/List.svelte';
 
     //Create your own firebase config file at project root folder to be imported
     import {firebaseConfig} from "../firebaseConfig"
 
     import {region} from './stores/region'
+   
 
    
     
@@ -42,7 +44,7 @@
                     <Input/>
                 </div>
                 <div class="cont-list">
-                    
+                    <List></List>
                 </div>
             </div>
         </Route>
@@ -59,13 +61,22 @@
 
 <style>
     :root {
+        --bg-color:  rgb(250,250,250);
+        --bg-highlight: rgb(240,240,240);
         --theme-default: #91EAE4;
+        
+    }
+
+    :global(body) {
+        background: var(--bg-color);
     }
 
 	main {
 		text-align: center;
-		padding: 0.2rem 2rem;
-		max-width: 240px;
+
+        padding: 0.1rem;
+		
+		max-width: 400px;
         min-height: 50vh;
 		margin: 0 auto;
 	}
@@ -80,6 +91,7 @@
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
+            padding: 0.2rem 2rem;
 		}
 	}
 
@@ -87,5 +99,6 @@
         display:flex;
         justify-content: center;
         flex-direction: column;
+        align-items: center;
     }
 </style>

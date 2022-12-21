@@ -1,33 +1,67 @@
 <script>
     import { notifications } from '../stores/notifications';
+    import {surls} from '../stores/surls.js'
+    import {userInput} from '../stores/userInput.js'
     import Db from './databases/Db.svelte'
-    let userInput;
+    
     let db;
+    let showMeta = false;
+    $:urlTitle = "Not Found"
     const send = () => {
-        db.createShortUrls(userInput)
+        getTitle()
+
+        db.getURLs($userInput)
     }
 
-    const handleSuccess = (eventMsg) => {
-        notifications.success("Short URLs found",3000)
+    
+    
+    const handleFound = (eventMsg) => {
+        console.log("handled");
+        console.log(eventMsg.detail);
+        $surls = eventMsg.detail
+       
+    }
+
+    const parseTitle = (body) => {
+        let match = body.match(/<title.*>([^<]*)<\/title>/) // regular expression to parse contents of the <title> tag
+        if (!match || typeof match[1] !== 'string')
+            throw new Error('Unable to parse the title tag')
+        return match[1]
+    }
+
+     const getTitle = async () => {
+        const res = await fetch(`http://api.allorigins.win/get?url=${encodeURI($userInput)}`).then((res)=> res.text())
+        .then(body =>parseTitle(body))
+        .then(title=> {
+            console.log(title)
+            urlTitle = title
+            showMeta = true;
+        })
     }
 
 </script>
-<Db bind:this={db} on:writeSuccessful={handleSuccess}></Db>
+<Db bind:this={db} on:urlsFound={handleFound}></Db>
 <div class="tab-input" transition:fade>
     <h1 class="cont-topic">Input your Long Urls Here!</h1>
     <form>
     <div class="cont-input">
         <input type="text" 
         id="in-longUrl" 
-        placeholder="Type here..." bind:value={userInput}>
+        placeholder="Type here..." bind:value={$userInput}>
         
     </div>
     <div class="cont-submit">
         <button class="btn_submit" on:click|preventDefault={send} >
-            Submit
+            Check
         </button>
     </div>
     </form>
+</div>
+<div class="cont-urlMeta">
+    {#if showMeta}
+        <h3>{urlTitle}</h3>
+    {/if}
+
 </div>
 
 <style>
@@ -47,7 +81,7 @@
         font-size: 1.2rem;
         outline: none;
         border:none;
-        width: 90vw;
+        width: 80vw;
         text-align: center;
         background-color: var(--bg-color);
         border-bottom: 2px solid darkgrey;

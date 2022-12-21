@@ -21,7 +21,7 @@ async function getDetails() {
         //TODO : When development 
         // "run npm install -g local-cors-proxy"
         // "lcp --proxyUrl http://ip-api.io"
-        // "Call proxy"
+   
         const res = await fetch("http://localhost:8010/proxy/json/")
                     .then(res => res.json())
                     .then(parsed => {
@@ -33,16 +33,26 @@ async function getDetails() {
     }
 
 let arrayifyJson = (_json) => {
-    let prows = Object.entries(_json).map(function(entry){
-            let key = entry[0];
-            let value = entry[1];
+        let rows = []
+        
+        Object.entries(_json).map( (entry)=> {
 
-            let nested_object = value;
-            nested_object.key = key;
+            //let key = entry[0];
+            //let value = entry[1];
+            
+            if($loggedIn?.id == entry[1] || entry[1] === "public") {
+                let nested_obj = {}            
 
-            return nested_object;
-        });
-    return prows;
+                nested_obj["url"] = entry[0]
+                if(entry[1] != "public") {
+                    
+                }
+                rows.push(nested_obj)
+            }
+        })
+
+    console.log(rows)
+    return rows;
 }
 
 // checkLongUrlHash = (_hash) => {
@@ -140,6 +150,26 @@ export const redirectUrl = async (_url) => {
         })
     })
 
+}
+
+export const getURLs = (_url) => {
+    const urlHash = sha256(_url)
+    console.log(urlHash)
+    const queryRef = query(ref(db,`long_url/`),orderByKey(),equalTo(urlHash))
+
+    onValue(queryRef,snapshot=> {
+        if(snapshot) {
+            snapshot.forEach((childSnap)=> {
+                if(childSnap.hasChild("surls")) {
+                    console.log(childSnap.child("surls").toJSON())
+                    console.log(childSnap.hasChild("surls"))
+                    dispatch("urlsFound",arrayifyJson(childSnap.child("surls").toJSON()))
+                }
+            })
+        }
+        
+        
+    })
 }
 
 </script>
