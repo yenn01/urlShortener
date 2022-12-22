@@ -4,8 +4,12 @@
     import {notifications} from '../stores/notifications.js'
     import {loggedIn} from '../stores/loggedIn'
 
-    const announceError = () => {
-        notifications.danger()
+    const announceError = (eventMsg) => {
+        notifications.danger(eventMsg.detail.text,3000)
+    }
+
+    const announceSuccess = (eventMsg) => {
+        notifications.success(eventMsg.detail.text,3000)
     }
 
     $: $loggedIn, console.log($loggedIn)
@@ -16,6 +20,7 @@
     let:loginWithGoogle
     let:logout
     on:loginError={announceError}
+    on:loginSucceeded={announceSuccess}
     >
 {#if $loggedIn === null}
 <div class="cont-login">
@@ -75,6 +80,14 @@
     .btn-logout {
         margin-top:1rem;
         border-radius:10%;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+    }
+
+    .btn-logout:hover {
+        color:white;
+        background-color: red;
+        transition: 0.2s ease-in-out;
     }
 
 </style>

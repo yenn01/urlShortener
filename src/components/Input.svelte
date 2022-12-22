@@ -2,13 +2,22 @@
     import { notifications } from '../stores/notifications';
     import {surls} from '../stores/surls.js'
     import {userInput} from '../stores/userInput.js'
+    import {validInput} from '../stores/validInput.js'
     import Db from './databases/Db.svelte'
     import { fade, fly } from 'svelte/transition';
+    import isURL from 'validator/lib/isURL'
+
+
     
     let db;
     let showMeta = false;
     $:urlTitle = "Not Found"
     const send = () => {
+        if(!$validInput) {
+            notifications.danger("Invalid Url", 3000)
+            return
+        }
+        $surls = null
         getTitle()
 
         db.getURLs($userInput)
@@ -19,8 +28,14 @@
     const handleFound = (eventMsg) => {
         console.log("handled");
         console.log(eventMsg.detail);
-        $surls = eventMsg.detail
-       
+ 
+            $surls = eventMsg.detail
+    }
+
+    const handleNotFound = (eventMsg) => {
+        console.log("handled");
+ 
+            $surls = ""
     }
 
     const parseTitle = (body) => {
@@ -40,8 +55,13 @@
         })
     }
     //TODO : Add regex to check for valid link
+
+
+
+    $: if($userInput !== null) {$validInput = isURL($userInput)} else if ($userInput === "") {$validInput = false}
+    $: $userInput, $surls = null, showMeta = false , urlTitle = "Not Found"
 </script>
-<Db bind:this={db} on:urlsFound={handleFound}></Db>
+<Db bind:this={db} on:urlsFound={handleFound} on:urlsNotFound={handleNotFound}></Db>
 <div class="tab-input" transition:fade>
     <h2 class="cont-topic">Input your Long Urls Here!</h2>
     <form>
@@ -60,7 +80,7 @@
 </div>
 <div class="cont-urlMeta">
     {#if showMeta}
-        <h2 class="meta">{urlTitle}</h2>
+        <h2 class="meta" transition:fade>{urlTitle}</h2>
     {/if}
 
 </div>

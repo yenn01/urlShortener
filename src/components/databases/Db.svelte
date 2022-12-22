@@ -1,5 +1,5 @@
 <script>
-import { getDatabase, push, ref, set, onValue, get, increment,update, query, equalTo,startAt, orderByKey, orderByValue, orderByChild,limitToLast, DataSnapshot,  } from "firebase/database";
+import { getDatabase, push, ref, set, onValue, get, increment,update, query, equalTo,startAt, orderByKey, orderByValue, orderByChild,limitToLast, DataSnapshot, endAt,  } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createEventDispatcher } from 'svelte';
 import { sha256 } from 'js-sha256';
@@ -21,8 +21,9 @@ async function getDetails() {
         //TODO : When development 
         // "run npm install -g local-cors-proxy"
         // "lcp --proxyUrl http://ip-api.io"
-   
-        const res = await fetch("http://localhost:8010/proxy/json/")
+        //http://api.allorigins.win/get?url=
+        //http://localhost:8010/proxy/json/
+        const res = await fetch("http://ip-api.io/json")
                     .then(res => res.json())
                     .then(parsed => {
                             console.log(parsed)
@@ -30,6 +31,8 @@ async function getDetails() {
                             return parsed.region_name
                         }       
                     )
+
+
     }
 
 let arrayifyJson = (_json) => {
@@ -96,7 +99,7 @@ export const createShortUrls = (_url,_private) => {
             const lurlRef = ref(db,`long_url/${urlHash}`)
             let updateLongUrl = {}
             
-            if($loggedIn) {
+            if(_private) {
                 let updateUserStat = {}
                 const userRef = ref(db,`user/${$loggedIn.id}`)
                 updateUserStat[`/stats/numberOfPrivateLinks`] = increment(1)
@@ -127,7 +130,7 @@ export const redirectUrl = async (_url) => {
     console.log(_url);
     await getDetails().then(() => {
         let clickedRef = "";
-        const surlRef = query(ref(db,'short_url/'),orderByKey(),startAt(_url))
+        const surlRef = query(ref(db,'short_url/'),orderByKey(),startAt(_url),endAt(_url+"\uf8ff"))
         get(surlRef).then( snapshot => {
             if(snapshot.hasChildren()) {
                 snapshot.forEach(childSS => {
@@ -151,6 +154,7 @@ export const redirectUrl = async (_url) => {
                             update(statRef,updates)
                         })            
                     }
+                    
             } else {
                 dispatch("redirectionNotFound")
             }
@@ -165,7 +169,7 @@ export const getURLs = (_url) => {
     const queryRef = query(ref(db,`long_url/`),orderByKey(),equalTo(urlHash))
 
     onValue(queryRef,snapshot=> {
-        if(snapshot) {
+        if(snapshot.exists()) {
             snapshot.forEach((childSnap)=> {
                 if(childSnap.hasChild("surls")) {
                     console.log(childSnap.child("surls").toJSON())
@@ -173,10 +177,27 @@ export const getURLs = (_url) => {
                     dispatch("urlsFound",arrayifyJson(childSnap.child("surls").toJSON()))
                 }
             })
+        } else {
+            console.log("Not Found")
+            dispatch("urlsNotFound")
         }
         
         
     })
+}
+
+export const getSurlDetails = (_key) => {
+    const queryRef = query(ref(db,`short_url/`),orderByKey(),startAt(_key),endAt(_key+"\uf8ff"))
+
+    onValue(queryRef, snapshot => {
+        if(snapshot.exists()) {
+            snapshot.forEach((childSnap)=> {
+                console.log(childSnap.toJSON())
+                dispatch("surlDetailsFound",childSnap.toJSON())
+            })
+        }
+    })
+
 }
 
 </script>

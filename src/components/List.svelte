@@ -1,12 +1,17 @@
 <script>
 import {surls} from '../stores/surls.js'
+import {notifications} from '../stores/notifications.js'
+import {userInput} from '../stores/userInput.js'
+import {loggedIn} from '../stores/loggedIn'
+
 import { fade, fly } from 'svelte/transition';
 import Toggle from "svelte-toggle";
-import {loggedIn} from '../stores/loggedIn'
+
+import {validInput} from '../stores/validInput'
 
     import Link from './Link.svelte';
     import Db from './databases/Db.svelte'
-    import {userInput} from '../stores/userInput.js'
+    
 
     let db
 
@@ -16,26 +21,33 @@ import {loggedIn} from '../stores/loggedIn'
     
     const addUrl = () => {
 
-        db.createShortUrls($userInput)
+        db.createShortUrls($userInput, toggled)
     }
 
     let toggled = false
 
+$: if($loggedIn == null) {toggled = false}
 </script>
 <Db bind:this={db} on:writeSuccessful={handleSuccess}></Db>
 
 <div class="cont-surls" transition:fade>
-    {#if $surls!== null} 
+    {#if !($surls === null || $surls === "")} 
         {#each $surls as _surl}
             <Link {_surl}></Link>
         {/each}
-        <div class="cont-add">
+
+    {:else if $surls === ""}
+        <h4 transition:fade>No links exist :&#40;</h4>
+        
+    {/if}
+    {#if $validInput == true && ($surls === "" || $surls !== null)}
+    <div class="cont-add" transition:fly>
             
-            <button class="btn-add" on:click|preventDefault={addUrl} >
-                Add New
-            </button>
-            <Toggle on="Private" off="Public"  disabled={$loggedIn === null ? true : false} bind:toggled hideLabel label="Set private or public link" toggledColor="#91EAE4"/>
-        </div>
+        <button class="btn-add" on:click|preventDefault={addUrl} >
+            Add New
+        </button>
+        <Toggle on="Private" off="Public"  disabled={$loggedIn === null ? true : false} bind:toggled hideLabel label="Set private or public link" toggledColor="#91EAE4"/>
+    </div>
     {/if}
 
 </div>

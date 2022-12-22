@@ -59,7 +59,6 @@
         // on the token.claims object
         const token = await fireUser.getIdTokenResult();
         user = userMapper(token.claims);
-        console.log(user)
       } else {
         user = null;
       }
