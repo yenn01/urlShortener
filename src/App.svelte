@@ -13,6 +13,7 @@
     import Login from './components/Login.svelte'
     import Redirect from './components/utilities/Redirect.svelte';
     import List from './components/List.svelte';
+    import Footer from './components/Footer.svelte'
 
     //Create your own firebase config file at project root folder to be imported
     //import {firebaseConfig} from "../firebaseConfigVercel"
@@ -62,6 +63,7 @@
                     <List></List>
                 </div>
             </div>
+            <Footer></Footer>
         </Route>
         <Route path="/:redirect" let:meta>
             <Redirect redirect={meta.params.redirect}></Redirect>
