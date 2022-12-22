@@ -46,8 +46,8 @@
     }
 
      const getTitle = async () => {
-        //`http://api.allorigins.win/get?url=${encodeURI($userInput)}
-        const res = await fetch(`${encodeURI($userInput)}`).then((res)=> res.text())
+        
+        const res = await fetch(`http://api.allorigins.win/get?url=${encodeURI($userInput)}`).then((res)=> res.text())
         .then(body =>parseTitle(body))
         .then(title=> {
             console.log(title)
