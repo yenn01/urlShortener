@@ -4,7 +4,7 @@
 
 </script>
     <div class="cont-header"> 
-        <img {src}>
+        <img {src} alt="shorter logo">
        
     </div>
 

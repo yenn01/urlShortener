@@ -45,7 +45,7 @@
             throw new Error('Unable to parse the title tag')
         return match[1]
     }
-
+    //Get title of the url
      const getTitle = async () => {
         loadingTitle = true;
         const res = await fetch(`https://api.allorigins.win/get?url=${encodeURI($userInput)}`).then((res)=> res.text())
@@ -58,11 +58,12 @@
 
         })
     }
-    //TODO : Add regex to check for valid link
 
 
 
+    //Used to check if userInput (inputted url) is valid
     $: if($userInput !== null) {$validInput = isURL($userInput)} else if ($userInput === "") {$validInput = false}
+    //Used to reset everything when the userInput changes
     $: $userInput, $surls = null, showMeta = false , loadingTitle=false,urlTitle = "Not Found"
 </script>
 <Db bind:this={db} on:urlsFound={handleFound} on:urlsNotFound={handleNotFound}></Db>
