@@ -53,7 +53,7 @@
             
             <div class="cont-main">
                 
-                <div class="cont-body" style="{y > 100 ? "box-shadow: 0px -5px 3px -5px rgba(0,0,0,.6), 0px 5px 3px -5px rgba(0,0,0,.6);": ""}">
+                <div class="cont-body" style="{y > 10 ? "box-shadow: 0px -5px 3px -5px rgba(0,0,0,.6), 0px 5px 3px -5px rgba(0,0,0,.6);": ""}">
                     <Header></Header>
                     <Login/>
                     <Input/>
