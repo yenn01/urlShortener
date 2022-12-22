@@ -15,12 +15,23 @@
     import List from './components/List.svelte';
 
     //Create your own firebase config file at project root folder to be imported
-    import {firebaseConfig} from "../firebaseConfig"
+    //import {firebaseConfig} from "../firebaseConfigVercel"
 
     import {region} from './stores/region'
    
+    const fb = __firebase;
 
-   
+    const firebaseConfig = {
+        apiKey: fb.env.API_KEY,
+        authDomain: fb.env.AUTH_DOMAIN,
+        databaseURL: fb.env.DATABASE_URL,
+        projectId: fb.env.PROJECT_ID,
+        storageBucket: fb.env.STORAGE_BUCKET,
+        messagingSenderId: fb.env.MESSAGING_SENDER_ID,
+        appId: fb.env.APP_ID,
+        measurementId:fb.env.MEASUREMENT_ID
+    };
+
     
 
     const app = initializeApp(firebaseConfig);
@@ -79,9 +90,7 @@
 
 	main {
 		text-align: center;
-
         padding: 0.1rem;
-		
 		max-width: 400px;
         min-height: 50vh;
 		margin: 0 auto;
