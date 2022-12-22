@@ -39,7 +39,7 @@
             showMeta = true;
         })
     }
-
+    //TODO : Add regex to check for valid link
 </script>
 <Db bind:this={db} on:urlsFound={handleFound}></Db>
 <div class="tab-input" transition:fade>
