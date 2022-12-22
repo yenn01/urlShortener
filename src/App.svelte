@@ -26,20 +26,24 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
 
-
+    let y;
 </script>
 
 <svelte:head>
     <title>shorter</title>
 </svelte:head>
+<svelte:window bind:scrollY={y}/>
+
 
 <main>
     <Route path="/*" firstmatch>    
         <Route path="/">
             <Toast/>
-            <Header></Header>
+            
             <div class="cont-main">
-                <div class="cont-body">
+                
+                <div class="cont-body" style="{y > 100 ? "box-shadow: 0px -5px 3px -5px rgba(0,0,0,.6), 0px 5px 3px -5px rgba(0,0,0,.6);": ""}">
+                    <Header></Header>
                     <Login/>
                     <Input/>
                 </div>
@@ -69,6 +73,7 @@
 
     :global(body) {
         background: var(--bg-color);
+        padding: 0px;
     }
 
 	main {
@@ -79,6 +84,7 @@
 		max-width: 400px;
         min-height: 50vh;
 		margin: 0 auto;
+        font-family: monospace;
 	}
 
 	h1 {
@@ -90,15 +96,23 @@
 
 	@media (min-width: 640px) {
 		main {
-			max-width: none;
-            padding: 0.2rem 2rem;
+			max-width: 800px;
+            padding: 0px 2rem;
 		}
 	}
 
+    .cont-main {
+        
+    }
+
     .cont-body {
         display:flex;
+        position:sticky;
+        top: 0;
         justify-content: center;
         flex-direction: column;
         align-items: center;
+        background-color: var(--bg-color);
+        transition: 0.1s ease-in-out
     }
 </style>

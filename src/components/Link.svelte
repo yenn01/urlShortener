@@ -1,13 +1,15 @@
 
 <script>
 
+import { fade, fly } from 'svelte/transition';
+
 let hostname = window.location.origin
 
 export let _surl;
 
 </script>
 
-<div class="cont-surl">
+<div class="cont-surl" transition:fly>
      <h4>{hostname}/{_surl.url}</h4>
 </div>
 

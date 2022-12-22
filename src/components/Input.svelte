@@ -3,6 +3,7 @@
     import {surls} from '../stores/surls.js'
     import {userInput} from '../stores/userInput.js'
     import Db from './databases/Db.svelte'
+    import { fade, fly } from 'svelte/transition';
     
     let db;
     let showMeta = false;
@@ -42,7 +43,7 @@
 </script>
 <Db bind:this={db} on:urlsFound={handleFound}></Db>
 <div class="tab-input" transition:fade>
-    <h1 class="cont-topic">Input your Long Urls Here!</h1>
+    <h2 class="cont-topic">Input your Long Urls Here!</h2>
     <form>
     <div class="cont-input">
         <input type="text" 
@@ -81,7 +82,7 @@
         font-size: 1.2rem;
         outline: none;
         border:none;
-        width: 80vw;
+        width: 100%;
         text-align: center;
         background-color: var(--bg-color);
         border-bottom: 2px solid darkgrey;
@@ -100,7 +101,7 @@
 
     @media (min-width: 640px) {
 		input {
-			width: 60vw;
+			width: 100%;
 		}
 	}
 
