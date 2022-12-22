@@ -9,7 +9,11 @@
 
             console.log(redirect)
             if(redirect !== "/") {
-                db.redirectUrl(redirect)
+                if(redirect?.length > 10 ) {
+                    db.redirectUrl(redirect)
+                } else {
+                    notFound = true;
+                }
             }
         
 
