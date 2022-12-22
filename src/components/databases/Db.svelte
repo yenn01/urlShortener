@@ -23,7 +23,7 @@ async function getDetails() {
         // "lcp --proxyUrl http://ip-api.io"
         //http://api.allorigins.win/get?url=
         //http://localhost:8010/proxy/json/
-        const res = await fetch("http://ip-api.io/json")
+        const res = await fetch("https://ip-api.io/json")
                     .then(res => res.json())
                     .then(parsed => {
                             console.log(parsed)
