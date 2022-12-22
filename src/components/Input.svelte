@@ -60,7 +60,7 @@
 </div>
 <div class="cont-urlMeta">
     {#if showMeta}
-        <h3>{urlTitle}</h3>
+        <h2 class="meta">{urlTitle}</h2>
     {/if}
 
 </div>
@@ -116,6 +116,10 @@
     .btn_submit:hover {
         background-color:var(--theme-default);
         transition: 0.3s ease-in-out;
+    }
+
+    .meta {
+        text-decoration: underline;
     }
 
 </style>
