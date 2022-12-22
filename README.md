@@ -1,8 +1,9 @@
 # Shorter
 
-A service web application that helps users shorten long URLs into a smaller URL.
+A service web application that helps users shorten long URLs into a **_shorter_** URL. <br/>
+Inspired by IPFS style hashing methods to detect similar files. <br/>Long URLs which have Short URLs (Surls) created will show all existing short URLs for that URL. Users can choose to either create public Surls which can be seen by everyone or opt to login (via Google) to create private URLs that will only be shown to the creating user.
 
-Live web site can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/).
+Live website can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/).
 
 ---
 
@@ -59,6 +60,17 @@ The current configuration of the source codes are meant for production. Certain 
 
 ### Disclaimer
 The website's front-end development was coded with the latest browser supports in mind, legacy browsers may not be supported.
+
+### Known Bugs
+Checking for another Long URL while the ```<Title>``` is being fetched for the previous Long URL may result in the previous title replacing the currently displayed ```<Title>``` if the previous Long URL fetch takes too long.
+
+---
+## Test cases
+```HTTP
+https://www.google.com/
+https://www.facebook.com/
+https://en.wikipedia.org/wiki/Adler-32
+```
 
 
 
