@@ -2,7 +2,7 @@
 
 A service web application that helps users shorten long URLs into a smaller URL.
 
-Live web site can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/).
+Live web site can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/) and is built directly from this repository
 
 ---
 
