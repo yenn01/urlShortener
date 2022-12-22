@@ -44,10 +44,12 @@ let arrayifyJson = (_json) => {
                 let nested_obj = {}            
 
                 nested_obj["url"] = entry[0]
+                nested_obj["owner"] = entry[1]
                 if(entry[1] != "public") {
-                    
+                    rows.unshift(nested_obj)
+                } else {
+                    rows.push(nested_obj)
                 }
-                rows.push(nested_obj)
             }
         })
 
@@ -67,10 +69,15 @@ let arrayifyJson = (_json) => {
 //     dispatch('msg-shortUrls')
 // }
 
-export const createShortUrls = (_url) => {
+export const createShortUrls = (_url,_private) => {
     const urlHash = sha256(_url)
    
     const surlRef = ref(db,`short_url/`)
+
+    let owner = "None"
+    if(_private) {
+        owner = $loggedIn.id
+    }
 
     //TODO Add record to firebase longURL
     const newSurlRef = push(surlRef)
@@ -78,7 +85,7 @@ export const createShortUrls = (_url) => {
     console.log(newSurlRef.key)
     set(newSurlRef, {
         'main':encodeURI(_url),
-        'owner': $loggedIn === null ? "None" : $loggedIn.id,
+        'owner': owner,
         'createdOn': Date.now(),
         'stats': {
             'lifetimeClicks': 0

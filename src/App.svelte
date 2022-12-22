@@ -67,6 +67,7 @@
     :root {
         --bg-color:  rgb(250,250,250);
         --bg-highlight: rgb(240,240,240);
+        --bg-theme: #d3eced;
         --theme-default: #91EAE4;
         
     }
