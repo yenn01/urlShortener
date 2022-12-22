@@ -3,7 +3,7 @@
 A service web application that helps users shorten long URLs into a **_shorter_** URL. <br/>
 Inspired by IPFS style hashing methods to detect similar files. <br/>Long URLs which have Short URLs (Surls) created will show all existing short URLs for that URL. Users can choose to either create public Surls which can be seen by everyone or opt to login (via Google) to create private URLs that will only be shown to the creating user.
 
-Live website can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/).
+Live website can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/) and is built directly from this repository
 
 ---
 
