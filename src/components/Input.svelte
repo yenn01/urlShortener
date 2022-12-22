@@ -11,6 +11,7 @@
     
     let db;
     let showMeta = false;
+    let loadingTitle = false;
     $:urlTitle = "Not Found"
     const send = () => {
         if(!$validInput) {
@@ -46,13 +47,15 @@
     }
 
      const getTitle = async () => {
-        
+        loadingTitle = true;
         const res = await fetch(`https://api.allorigins.win/get?url=${encodeURI($userInput)}`).then((res)=> res.text())
         .then(body =>parseTitle(body))
         .then(title=> {
             console.log(title)
             urlTitle = title
+            loadingTitle = false;
             showMeta = true;
+
         })
     }
     //TODO : Add regex to check for valid link
@@ -60,7 +63,7 @@
 
 
     $: if($userInput !== null) {$validInput = isURL($userInput)} else if ($userInput === "") {$validInput = false}
-    $: $userInput, $surls = null, showMeta = false , urlTitle = "Not Found"
+    $: $userInput, $surls = null, showMeta = false , loadingTitle=false,urlTitle = "Not Found"
 </script>
 <Db bind:this={db} on:urlsFound={handleFound} on:urlsNotFound={handleNotFound}></Db>
 <div class="tab-input" transition:fade>
@@ -82,6 +85,11 @@
 <div class="cont-urlMeta">
     {#if showMeta}
         <h2 class="meta" transition:fade>{urlTitle}</h2>
+
+    {:else if loadingTitle}
+        <h3>Loading title...</h3>
+
+
     {/if}
 
 </div>
