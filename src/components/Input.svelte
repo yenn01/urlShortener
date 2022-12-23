@@ -27,14 +27,14 @@
     
     
     const handleFound = (eventMsg) => {
-        console.log("handled");
-        console.log(eventMsg.detail);
+        //console.log("handled");
+        //console.log(eventMsg.detail);
  
             $surls = eventMsg.detail
     }
 
     const handleNotFound = (eventMsg) => {
-        console.log("handled");
+        //console.log("handled");
  
             $surls = ""
     }
@@ -56,7 +56,7 @@
         const res = await fetch(`https://api.allorigins.win/get?url=${encodeURI(url)}`).then((res)=> res.text())
         .then(body =>parseTitle(body))
         .then(title=> {
-            console.log(title)
+            //console.log(title)
             urlTitle = title
             loadingTitle = false;
             showMeta = true;

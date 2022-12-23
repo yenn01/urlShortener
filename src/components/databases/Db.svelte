@@ -26,7 +26,7 @@ async function getDetails() {
         const res = await fetch("https://ip-api.io/json")
                     .then(res => res.json())
                     .then(parsed => {
-                            console.log(parsed)
+                            //console.log(parsed)
                             $region = parsed.region_name
                             return parsed.region_name
                         }       
@@ -56,7 +56,7 @@ let arrayifyJson = (_json) => {
             }
         })
 
-    console.log(rows)
+    //console.log(rows)
     return rows;
 }
 
@@ -85,7 +85,7 @@ export const createShortUrls = (_url,_private) => {
     //TODO Add record to firebase longURL
     const newSurlRef = push(surlRef)
     const pushKey = newSurlRef.key
-    console.log(newSurlRef.key)
+    //console.log(newSurlRef.key)
     set(newSurlRef, {
         'main':encodeURI(_url),
         'owner': owner,
@@ -111,7 +111,7 @@ export const createShortUrls = (_url,_private) => {
             updateLongUrl[`main`] = encodeURI(_url)
             update(lurlRef,updateLongUrl)
 
-            console.log(db)
+            //console.log(db)
             
             dispatch('writeSuccessful')
         
@@ -127,7 +127,7 @@ export const createShortUrls = (_url,_private) => {
 }
 
 export const redirectUrl = async (_url) => {
-    console.log(_url);
+    //console.log(_url);
     await getDetails().then(() => {
         let clickedRef = "";
         const surlRef = query(ref(db,'short_url/'),orderByKey(),startAt(_url),endAt(_url+"\uf8ff"))
@@ -136,11 +136,11 @@ export const redirectUrl = async (_url) => {
                 snapshot.forEach(childSS => {
                     const mainUrl = childSS.child("main").val()
                     clickedRef = childSS.key
-                    console.log(mainUrl)
+                    //console.log(mainUrl)
                     dispatch("redirectionFound",mainUrl)
                 })
                 if(clickedRef !== "") {
-                        console.log(clickedRef)
+                        //console.log(clickedRef)
                         const statRef = ref(db,`short_url/${clickedRef}`)
                         const clickRef = ref(db,`short_url/${clickedRef}/clicks`)
                         const pushClick = push(clickRef)
@@ -165,15 +165,15 @@ export const redirectUrl = async (_url) => {
 
 export const getURLs = (_url) => {
     const urlHash = sha256(_url)
-    console.log(urlHash)
+    //console.log(urlHash)
     const queryRef = query(ref(db,`long_url/`),orderByKey(),equalTo(urlHash))
 
     onValue(queryRef,snapshot=> {
         if(snapshot.exists()) {
             snapshot.forEach((childSnap)=> {
                 if(childSnap.hasChild("surls")) {
-                    console.log(childSnap.child("surls").toJSON())
-                    console.log(childSnap.hasChild("surls"))
+                    //console.log(childSnap.child("surls").toJSON())
+                    //console.log(childSnap.hasChild("surls"))
                     dispatch("urlsFound",arrayifyJson(childSnap.child("surls").toJSON()))
                 }
             })
@@ -192,7 +192,7 @@ export const getSurlDetails = (_key) => {
     onValue(queryRef, snapshot => {
         if(snapshot.exists()) {
             snapshot.forEach((childSnap)=> {
-                console.log(childSnap.toJSON())
+                //console.log(childSnap.toJSON())
                 dispatch("surlDetailsFound",childSnap.toJSON())
             })
         }

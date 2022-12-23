@@ -7,7 +7,7 @@
 
     onMount(async() => {
 
-            console.log(redirect)
+            //console.log(redirect)
             if(redirect !== "/") {
                 if(redirect?.length > 10 ) {
                     db.redirectUrl(redirect)
