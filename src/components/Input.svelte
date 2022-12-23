@@ -48,7 +48,12 @@
     //Get title of the url
      const getTitle = async () => {
         loadingTitle = true;
-        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURI($userInput)}`).then((res)=> res.text())
+        let url = $userInput
+        if (!/^https?:\/\//i.test($userInput)) {
+            url = 'https://' + $userInput;
+        }
+
+        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURI(url)}`).then((res)=> res.text())
         .then(body =>parseTitle(body))
         .then(title=> {
             console.log(title)
