@@ -38,9 +38,12 @@
 
     const beginRedirect = (eventMsg) => {
 
-        
+        let url = eventMsg.detail
         // navigator.geolocation.getCurrentPosition(successPos);
-        window.location.href= eventMsg.detail;
+        if (!/^https?:\/\//i.test(url)) {
+            url = 'https://' + eventMsg.detail;
+        }
+        window.location.href= url;
     }
 
     
