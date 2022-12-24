@@ -23,6 +23,7 @@ async function getDetails() {
         // "lcp --proxyUrl http://ip-api.io"
         //http://api.allorigins.win/get?url=
         //http://localhost:8010/proxy/json/
+        try {
         const res = await fetch("https://ip-api.io/json")
                     .then(res => res.json())
                     .then(parsed => {
@@ -31,7 +32,9 @@ async function getDetails() {
                             return parsed.region_name
                         }       
                     )
-
+                    } catch (e) {
+                        console.log(e)
+                    }
 
     }
 
@@ -145,7 +148,7 @@ export const redirectUrl = async (_url) => {
                         const clickRef = ref(db,`short_url/${clickedRef}/clicks`)
                         const pushClick = push(clickRef)
                         set(pushClick, {
-                            'geolocation':$region,
+                            'geolocation':$region === null ? "Fail-to-get" : $region,
                             'device':navigator.userAgent,
                             'timestamp': Date.now(),                
                         }).then(()=> {
