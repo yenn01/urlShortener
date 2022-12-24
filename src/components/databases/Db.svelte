@@ -24,12 +24,12 @@ async function getDetails() {
         //http://api.allorigins.win/get?url=
         //http://localhost:8010/proxy/json/
         try {
-        const res = await fetch("https://ip-api.io/json")
+        const res = await fetch("https://ipapi.co/json")
                     .then(res => res.json())
                     .then(parsed => {
                             //console.log(parsed)
-                            $region = parsed.region_name
-                            return parsed.region_name
+                            $region = parsed.city
+                            return parsed.city
                         }       
                     )
                     } catch (e) {
