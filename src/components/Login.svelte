@@ -12,7 +12,7 @@
         notifications.success(eventMsg.detail.text,3000)
     }
 
-    $: $loggedIn, console.log($loggedIn)
+    //$: $loggedIn, console.log($loggedIn)
 </script>
 <div class="holder-login">
     <Auth

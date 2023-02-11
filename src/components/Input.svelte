@@ -11,6 +11,7 @@
     
     let db;
     let showMeta = false;
+    let loadingTitle = false;
     $:urlTitle = "Not Found"
     const send = () => {
         if(!$validInput) {
@@ -26,14 +27,14 @@
     
     
     const handleFound = (eventMsg) => {
-        console.log("handled");
-        console.log(eventMsg.detail);
+        //console.log("handled");
+        //console.log(eventMsg.detail);
  
             $surls = eventMsg.detail
     }
 
     const handleNotFound = (eventMsg) => {
-        console.log("handled");
+        //console.log("handled");
  
             $surls = ""
     }
@@ -44,22 +45,31 @@
             throw new Error('Unable to parse the title tag')
         return match[1]
     }
-
+    //Get title of the url
      const getTitle = async () => {
-        const res = await fetch(`http://api.allorigins.win/get?url=${encodeURI($userInput)}`).then((res)=> res.text())
+        loadingTitle = true;
+        let url = $userInput
+        if (!/^https?:\/\//i.test($userInput)) {
+            url = 'https://' + $userInput;
+        }
+
+        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURI(url)}`).then((res)=> res.text())
         .then(body =>parseTitle(body))
         .then(title=> {
-            console.log(title)
+            //console.log(title)
             urlTitle = title
+            loadingTitle = false;
             showMeta = true;
+
         })
     }
-    //TODO : Add regex to check for valid link
 
 
 
+    //Used to check if userInput (inputted url) is valid
     $: if($userInput !== null) {$validInput = isURL($userInput)} else if ($userInput === "") {$validInput = false}
-    $: $userInput, $surls = null, showMeta = false , urlTitle = "Not Found"
+    //Used to reset everything when the userInput changes
+    $: $userInput, $surls = null, showMeta = false , loadingTitle=false,urlTitle = "Not Found"
 </script>
 <Db bind:this={db} on:urlsFound={handleFound} on:urlsNotFound={handleNotFound}></Db>
 <div class="tab-input" transition:fade>
@@ -81,6 +91,11 @@
 <div class="cont-urlMeta">
     {#if showMeta}
         <h2 class="meta" transition:fade>{urlTitle}</h2>
+
+    {:else if loadingTitle}
+        <h3>Loading title...</h3>
+
+
     {/if}
 
 </div>

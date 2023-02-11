@@ -1,29 +1,40 @@
-# This repo is no longer maintained. Consider using `npm init vite` and selecting the `svelte` option or — if you want a full-fledged app framework and don't mind using pre-1.0 software — use [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
+# Shorter
+
+A service web application that helps users shorten long URLs into a **_shorter_** URL. <br/>
+Inspired by IPFS style hashing methods to detect similar files. <br/>Long URLs which have Short URLs (Surls) created will show all existing short URLs for that URL. Users can choose to either create public Surls which can be seen by everyone or opt to login (via Google) to create private URLs that will only be shown to the creating user.
+
+Live website can be found [here](https://shorter-cgcko.vercel.app/) (https://shorter-cgcko.vercel.app/) and is built directly from this repository
 
 ---
 
-# svelte app
+## Installation
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+### Stack
+- Svelte
+- Firebase Realtime Database
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+### Setting up Firebase
+Create a `.env` at root of project folder and copy from Firebase your Firebase Realtime Database Config Keys in it as follows:
+```
+API_KEY=PUT_YOUR_API_KEY_FROM_FIREBASE_HERE
+AUTH_DOMAIN=PUT_YOUR_URL_FROM_FIREBASE_HERE
+DATABASE_URL=PUT_YOUR_URL_FROM_FIREBASE_HERE
+PROJECT_ID=PUT_YOUR_PROJECT_ID_FROM_FIREBASE_HERE
+STORAGE_BUCKET=PUT_YOUR_STORAGE_BUCKET_FROM_FIREBASE_HERE
+MESSAGING_SENDER_ID=PUT_YOUR_ID_HERE
+APP_ID=PUT_YOUR_ID_HERE
+MEASUREMENT_ID=PUT_YOUR_ID_HERE
+```
+
+### Svelte
+This is a project built on [Svelte](https://svelte.dev). Run the following code to install needed dependencies.
 
 ```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+npm install
 ```
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
 
-
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
-npm install
-```
 
 ...then start [Rollup](https://rollupjs.org):
 
@@ -31,77 +42,39 @@ npm install
 npm run dev
 ```
 
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+Navigate to [localhost:8080](http://localhost:8080) or refer to CLI for another port number if 8080 is taken.
 
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
+If you're using [Visual Studio Code](https://code.visualstudio.com/) it is recommend to instal the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
 
-## Building and running in production mode
+### Building and running in production mode
 
 To create an optimised version of the app:
 
 ```bash
 npm run build
 ```
+---
+### Important Note
+The current configuration of the source codes are meant for production. Certain changes are needed to run on `localhost`. Changing the url format from `https://` to `http://` for two fetch functions are needed. They are the fetch title of website function at `Input.svelte` and the redirection function at `Db.svelte`.
 
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
+### Disclaimer
+The website's front-end development was coded with the latest browser supports in mind, legacy browsers may not be supported.
 
+### Known Bugs
+Checking for another Long URL while the ```<Title>``` is being fetched for the previous Long URL may result in the previous title replacing the currently displayed ```<Title>``` if the previous Long URL fetch takes too long.
 
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
+---
+## Test cases
+```HTTP
+https://www.google.com/
+https://www.facebook.com/
+https://en.wikipedia.org/wiki/Adler-32
 ```
 
-## Using TypeScript
 
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
 
-```bash
-node scripts/setupTypeScript.js
-```
 
-Or remove the script via:
 
-```bash
-rm scripts/setupTypeScript.js
-```
 
-If you want to use `baseUrl` or `path` aliases within your `tsconfig`, you need to set up `@rollup/plugin-alias` to tell Rollup to resolve the aliases. For more info, see [this StackOverflow question](https://stackoverflow.com/questions/63427935/setup-tsconfig-path-in-svelte).
 
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```

@@ -1,11 +1,24 @@
 import svelte from 'rollup-plugin-svelte';
+import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import 'dotenv/config';
 
 const production = !process.env.ROLLUP_WATCH;
+
+const {
+    API_KEY,
+    AUTH_DOMAIN,
+    DATABASE_URL,
+    PROJECT_ID,
+    STORAGE_BUCKET,
+    MESSAGING_SENDER_ID,
+    APP_ID,
+    MEASUREMENT_ID
+  } = process.env;
 
 function serve() {
 	let server;
@@ -37,12 +50,29 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+        replace({
+            __firebase: JSON.stringify({
+                env: {
+                    isProd: production,
+                    API_KEY,
+                    AUTH_DOMAIN,
+                    DATABASE_URL,
+                    PROJECT_ID,
+                    STORAGE_BUCKET,
+                    MESSAGING_SENDER_ID,
+                    APP_ID,
+                    MEASUREMENT_ID
+                }
+            }),
+            preventAssignment: true
+        }),
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
 			}
 		}),
+        
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
@@ -74,3 +104,4 @@ export default {
 		clearScreen: false
 	}
 };
+

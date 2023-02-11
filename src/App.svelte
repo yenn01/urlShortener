@@ -13,14 +13,26 @@
     import Login from './components/Login.svelte'
     import Redirect from './components/utilities/Redirect.svelte';
     import List from './components/List.svelte';
+    import Footer from './components/Footer.svelte'
 
     //Create your own firebase config file at project root folder to be imported
-    import {firebaseConfig} from "../firebaseConfig"
+    //import {firebaseConfig} from "../firebaseConfigVercel"
 
     import {region} from './stores/region'
    
+    const fb = __firebase;
 
-   
+    const firebaseConfig = {
+        apiKey: fb.env.API_KEY,
+        authDomain: fb.env.AUTH_DOMAIN,
+        databaseURL: fb.env.DATABASE_URL,
+        projectId: fb.env.PROJECT_ID,
+        storageBucket: fb.env.STORAGE_BUCKET,
+        messagingSenderId: fb.env.MESSAGING_SENDER_ID,
+        appId: fb.env.APP_ID,
+        measurementId:fb.env.MEASUREMENT_ID
+    };
+
     
 
     const app = initializeApp(firebaseConfig);
@@ -42,7 +54,7 @@
             
             <div class="cont-main">
                 
-                <div class="cont-body" style="{y > 100 ? "box-shadow: 0px -5px 3px -5px rgba(0,0,0,.6), 0px 5px 3px -5px rgba(0,0,0,.6);": ""}">
+                <div class="cont-body" style="{y > 10 ? "box-shadow: 0px -5px 3px -5px rgba(0,0,0,.6), 0px 5px 3px -5px rgba(0,0,0,.6);": ""}">
                     <Header></Header>
                     <Login/>
                     <Input/>
@@ -51,6 +63,7 @@
                     <List></List>
                 </div>
             </div>
+            <Footer></Footer>
         </Route>
         <Route path="/:redirect" let:meta>
             <Redirect redirect={meta.params.redirect}></Redirect>
@@ -79,9 +92,7 @@
 
 	main {
 		text-align: center;
-
         padding: 0.1rem;
-		
 		max-width: 400px;
         min-height: 50vh;
 		margin: 0 auto;
