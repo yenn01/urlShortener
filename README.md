@@ -1,4 +1,5 @@
 # Shorter
+![image](https://user-images.githubusercontent.com/48972583/218263393-4909c658-805d-4d3f-b6ee-c546ba55fb3d.png)
 
 A service web application that helps users shorten long URLs into a **_shorter_** URL. <br/>
 Inspired by IPFS style hashing methods to detect similar files. <br/>Long URLs which have Short URLs (Surls) created will show all existing short URLs for that URL. Users can choose to either create public Surls which can be seen by everyone or opt to login (via Google) to create private URLs that will only be shown to the creating user.
